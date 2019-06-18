@@ -1,0 +1,23 @@
+version: '2'
+
+vars:
+  ETCD_ENDPOINT: 192.168.163.241:2379
+  KEY: "/"
+  
+env:
+  ETCDCTL_API: 3  
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  get:
+    cmds:
+      - etcdctl --endpoints={{.ETCD_ENDPOINT}} get "{{.KEY}}"
+
+  etcd_member_list:
+    cmds:
+      - etcdctl --endpoints={{.ETCD_ENDPOINT}} member list  
+  

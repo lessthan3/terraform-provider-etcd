@@ -1,0 +1,37 @@
+version: '2'
+
+vars:
+  VERSION: { sh: cat version}
+
+env:
+  # TF_LOG: TRACE
+    
+tasks:
+
+  build:
+    cmds:
+      - go mod download && go build -o plugins/terraform-provider-etcd_v{{.VERSION}}
+
+  init:
+    cmds:
+      - cd example && terraform init -plugin-dir={{.PWD}}/plugins
+
+  plan:
+    cmds:
+      - cd example && terraform plan
+
+  apply:
+    cmds:
+      - cd example && terraform apply
+
+  destroy:
+    cmds:
+      - cd example && terraform destroy
+
+  release:
+    cmds:
+      - git add version
+      - git commit -m "release v{{.VERSION}}"
+      - git tag v{{.VERSION}}
+      - git push origin v{{.VERSION}}
+      - git push --follow-tags origin
