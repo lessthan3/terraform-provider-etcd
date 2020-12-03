@@ -48,8 +48,6 @@ func Provider() *schema.Provider {
 
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	var endpoints []string
-	var username []string
-	var password []string
 
 	values := d.Get("endpoints").(string)
 	username := d.Get("username").(string)
