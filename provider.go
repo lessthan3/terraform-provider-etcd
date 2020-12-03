@@ -22,6 +22,16 @@ func Provider() *schema.Provider {
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Required: true,
 			},
+			"username": &schema.Schema{
+				Type:     schema.TypeString,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Required: true,
+			},
+			"password": &schema.Schema{
+				Type:     schema.TypeString,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Required: true,
+			},
 			"request_timeout": {
 				Type:         schema.TypeInt,
 				Optional:     true,
@@ -38,13 +48,19 @@ func Provider() *schema.Provider {
 
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	var endpoints []string
+	var username []string
+	var password []string
 
 	values := d.Get("endpoints").(string)
+	username := d.Get("username").(string)
+	password := d.Get("password").(string)
 	endpoints = strings.Split(values, ",")
 
 	config := etcd.Config{
 		Endpoints:   endpoints,
 		DialTimeout: 5 * time.Second,
+                Username:    username,
+		Password:    password,
 	}
 
 	client, err := etcd.New(config)
