@@ -59,7 +59,7 @@ func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	config := etcd.Config{
 		Endpoints:   endpoints,
 		DialTimeout: 5 * time.Second,
-                Username:    username,
+		Username:    username,
 		Password:    password,
 	}
 
